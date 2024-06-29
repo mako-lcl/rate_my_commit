@@ -1,4 +1,6 @@
 # Rate my Commit
+![Alt text](images/example.png)
+
 A simple rust discord bot that uses ChatGPT completion to rate git commits. Returns a rating (1-10), short comment and an emoji. Reads messages in a specified server & channel. 
 Commits must be discord message embedded descriptions (setup github webhook for discord channel). Supply environment variables in docker-compose.yml.
 
