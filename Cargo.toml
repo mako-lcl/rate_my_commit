@@ -1,0 +1,22 @@
+[package]
+name = "rate_my_commit"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# -- Tokio
+tokio = { version = "1", features = ["full"] }
+# -- Serde
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
+serde_with_macros = "3"
+# -- Discord Bot
+serenity = "0.12.2"
+# -- Reqwest
+reqwest = { version = "0.12.5", features = ["json"] }
+# -- Dotenv
+dotenv = "0.15.0"
+# -- CLI
+clap = { version = "4.0", features = ["derive"] }
+# -- Error handling
+anyhow = "=1.0.86"
