@@ -35,33 +35,37 @@ impl EventHandler for Bot {
                     println!("Embed description: {}", commit_message);
 
                     // -- Rate commit message
-                    if let Ok(rating) = self.commit_rater.rate_commit(commit_message.clone()).await
-                    {
-                        // -- Create response message
-                        let response_msg = format!(
-                            "{}\n{}{}{}{}",
-                            rating.comment,
-                            BOT_RESPONSE_RATING,
-                            rating.rating,
-                            BOT_RESPONSE_EMOJI,
-                            rating.emoji
-                        );
-
-                        // -- Send message
-                        let cloned = response_msg.clone();
-                        if let Err(why) = msg.reply(&ctx.http, response_msg).await {
-                            println!("Error sending message. Content: {cloned:?}\nError: {why:?}");
-                        }
-
-                        // -- Get emoji as char
-                        if let Some(emoji) = rating.emoji.chars().next() {
-                            // -- React to message
-                            if let Err(why) = msg.react(ctx, emoji).await {
-                                println!(
-                                    "Error sending emoji. Content: {cloned:?}\nError: {why:?}"
+                    match self.commit_rater.rate_commit(commit_message.clone()).await {
+                        Ok(rating) => {
+                            {
+                                // -- Create response message
+                                let response_msg = format!(
+                                    "{}\n{}{}{}{}",
+                                    rating.comment,
+                                    BOT_RESPONSE_RATING,
+                                    rating.rating,
+                                    BOT_RESPONSE_EMOJI,
+                                    rating.emoji
                                 );
+
+                                // -- Send message
+                                let cloned = response_msg.clone();
+                                if let Err(why) = msg.reply(&ctx.http, response_msg).await {
+                                    println!("Error sending message. Content: {cloned:?}\nError: {why:?}");
+                                }
+
+                                // -- Get emoji as char
+                                if let Some(emoji) = rating.emoji.chars().next() {
+                                    // -- React to message
+                                    if let Err(why) = msg.react(ctx, emoji).await {
+                                        println!(
+                                            "Error sending emoji. Content: {cloned:?}\nError: {why:?}"
+                                        );
+                                    }
+                                }
                             }
                         }
+                        Err(e) => println!("Error: {}", e),
                     }
                 }
             }

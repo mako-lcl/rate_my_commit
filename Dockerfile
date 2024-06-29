@@ -21,6 +21,9 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && apt install -y openssl
 
+# Install ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+
 # Copy the built binary from the builder stage
 COPY --from=builder /app/target/release/rate_my_commit /usr/local/bin/rate_my_commit
 
